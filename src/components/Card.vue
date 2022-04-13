@@ -19,6 +19,10 @@ const props = defineProps({
 </template>
 
 <style scope>
-
-
+    img{       
+       width: clamp(69px, 20vw, 175px)
+    }
+    .card{
+        cursor: pointer;
+    }
 </style>
