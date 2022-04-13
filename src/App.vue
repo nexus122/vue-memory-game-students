@@ -1,51 +1,61 @@
 <script setup>
-// Importamos el JSON. Vue ya lo convierte en un array de objetos y lo poe en la variable pokedex
-import pokedex from "./assets/pokedex.json";
 
-// Componentes
-import Card from "./components/Card.vue";
-import ChessBoard from "./components/ChessBoard.vue";
+// Importamos el JSON. Vue ya lo convierte en un array de objetos y lo poe en la variable pokedex 
+import pokedex from './assets/pokedex.json';
+import backCardImage from './assets/back-card.png';
+import Card from './components/Card.vue';
+import ChessBoard from './components/ChessBoard.vue';
+import RadialProgress from "vue3-radial-progress";
 
-// Cargamos imagenes
-import backCardImage from "./assets/back-card.png";
-import { reactive } from "@vue/reactivity";
+import { reactive } from 'vue';
 
-// Iteración 1. Haced un console.log para ver el resultado. Sugerencia: cread una variable nueva normal y corriente.
+// Iteración 1. Haced un console.log para ver el resultado. Sugerencia: cread una variable nueva normal y corriente
+
+shuffleArray(pokedex);
+
 let pokemon = pokedex.slice(0, 10);
-// Obtener con el map sobre la variable pokemon, quedarnos con el nombe, la imagen y el identificador unico
+
+
+// usar .map adecuadamente sobre la variable 'pokemon'. Reasignar el resultado en 'pokemon' solo con los 3 campos requeridos. 
+
+// Primera iteración: me quedo solo con el id y el nombre en inglés
+// Segunda iteración: Construyo la ruta a la imagen. Por ejemplo para el primer pokemon seria '/pokemons/001.png' , pero para el 10 sería '/pokemons/010.png' 
 pokemon = pokemon.map((p) => {
   return {
     id: p.id,
-    name: p.name.french,
-    img: "/pokemons/" + p.id.toString().padStart(3, "0") + ".png",
-  };
-});
+    name: p.name.english,
+    image: `/pokemons/${p.id.toString().padStart(3, '0')}.png`
+  }
+})
 
-// Estado de nuestra aplicación.
 const state = reactive({
   score: 0,
-});
+  totalMatches: 10
+})
 
-// Funcion que nos comprueba si hemos hecho algo mal o bien
 function checkCards(isMatch) {
-  if (!isMatch) {
+  if (isMatch) {
     state.score++;
   }
 }
+
+function shuffleArray(inputArray) {
+  inputArray.sort(() => Math.random() - 0.5);
+}
+
+
 </script>
 
 <template>
   <header>
-    <h1>¡PokeMemory</h1>
-    <p>Score: {{ state.score }}</p>
+    <h1>¡PokeMemory!</h1>
+    <RadialProgress :diameter="100" :completed-steps="state.score" :total-steps="state.totalMatches">
+      {{ state.score }} / {{ state.totalMatches }}
+    </RadialProgress>
   </header>
 
   <main>
-    <ChessBoard
-      @onCheckedCards="checkCards"
-      :cards="pokemon"
-      :backCardImage="backCardImage"
-    />
+    <ChessBoard @onCheckedCards="checkCards" :cards="pokemon" :backCardImage="backCardImage"></ChessBoard>
   </main>
 </template>
 
@@ -53,16 +63,11 @@ function checkCards(isMatch) {
 @import "./assets/base.css";
 
 header {
+  line-height: 1.5;
   display: flex;
   justify-content: space-between;
-  line-height: 1.5;
-  padding: 1em;
 }
 
-header p {
-  vertical-align: middle;
-  font-size: 2em;
-}
 
 .logo {
   display: block;

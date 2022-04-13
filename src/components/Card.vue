@@ -1,28 +1,57 @@
-    <!-- Card Component -->
+<!-- Card Component -->
 <script setup>
-// Asi se definen los props del componente, la función recibe un parametro con un objeto.
-// Se pone el nombre de la propiedad y el tipo de la variable.
+
+// Definir propiedades del componente
+// La función recibe un parámetro que es un objeto con todas las propiedades del componente
+// Se pone nombredelapropiedad: tipo de variable
 
 const props = defineProps({
-    back: String,
-    front: String,
-    reveal: Boolean
+    back: String, // es una ruta a una imagen
+    front: String, // es una ruta a una imagen
+    reveal: Boolean // me dice que debo revelarme o no
 })
 
 </script>
 
 <template>
-    <div class="card">
-        <span v-if="!reveal" class="back"><img :src="back" alt=""></span>
-        <span v-else class="front"><img :src="front" alt=""></span>
+    <!-- Podemos usar en el template directamente las propiedades, simplemente poniendo su nomre -->
+    <div>
+        <TransitionGroup name="slide-fade">
+            <img v-if="!reveal" class="front" :src="back" alt="pokemon card">
+            <img v-if="reveal" class="back" :src="front" alt="pokemon butterfly">
+        </TransitionGroup>
+
     </div>
 </template>
 
-<style scope>
-    img{       
-       width: clamp(69px, 20vw, 175px)
-    }
-    .card{
-        cursor: pointer;
-    }
+<style scoped>
+img {
+    width: clamp(69px, 18vw, 175px);
+}
+
+/*
+  Enter and leave animations can use different
+  durations and timing functions.
+*/
+.slide-fade-enter-active {
+    transition: all 1s;
+}
+
+.slide-fade-leave-active {
+    transition: all 1s;
+}
+
+.slide-fade-enter-from{
+    opacity: 1;
+    transform: rotateY(-180deg);
+}
+
+.slide-fade-leave-to {    
+    opacity: 0;
+    transform: rotateY(180deg);
+}
+.back{
+    position: absolute;
+    background-color: white;
+}
 </style>
