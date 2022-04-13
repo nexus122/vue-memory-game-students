@@ -15,18 +15,22 @@ const props = defineProps({
 
 <template>
     <!-- Podemos usar en el template directamente las propiedades, simplemente poniendo su nomre -->
-    <div>
+    <div class="card">
         <TransitionGroup name="slide-fade">
             <img v-if="!reveal" class="front" :src="back" alt="pokemon card">
             <img v-if="reveal" class="back" :src="front" alt="pokemon butterfly">
         </TransitionGroup>
-
     </div>
 </template>
 
 <style scoped>
-img {
+.card{
     width: clamp(69px, 18vw, 175px);
+    height: 170px;
+}
+
+.card img{
+    width: 100%;
 }
 
 /*
@@ -34,11 +38,11 @@ img {
   durations and timing functions.
 */
 .slide-fade-enter-active {
-    transition: all 1s;
+    transition: all 0.5s;
 }
 
 .slide-fade-leave-active {
-    transition: all 1s;
+    transition: all 0.5s;
 }
 
 .slide-fade-enter-from{
@@ -50,8 +54,7 @@ img {
     opacity: 0;
     transform: rotateY(180deg);
 }
-.back{
-    position: absolute;
-    background-color: white;
+.back, .front{
+    position: absolute;    
 }
 </style>

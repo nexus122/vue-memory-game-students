@@ -88,7 +88,7 @@ function onCardClicked(card) {
 
 <template>
     <!-- Iteración 3: Utiliza adecuadamente el v-for para crear tantas Card como elementos hay en 'cards'. -->
-    <div>
+    <div class="board">
         <Card @click="onCardClicked(card)" v-for="(card, index) in cardsChessBoard" :key="index" :back="backCardImage"
             :front="card.image" :reveal="card.reveal">
         </Card>
@@ -97,12 +97,11 @@ function onCardClicked(card) {
 </template>
 
 <style scoped>
-div {
+.board {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     row-gap: 1rem;
     cursor: pointer;
     user-select: none;
-
 }
 </style>
